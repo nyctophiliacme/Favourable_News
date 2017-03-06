@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+      <script type="text/javascript" src="js/jquery.js"></script>
+      <link rel="stylesheet" type="text/css" href="styles.css" /> 
+      <script type="text/javascript">
+      
+        var newIndex = 0,curIndex = 0,temp = 0;
+         // autoSlider();
+        // hoverHandler();
+      
+        var autoHelper = function()
+        {
+            changeImage(1);
+        }
+
+        function changeImage(n)
+        {
+            if(n>0)
+                {
+                    $('#right-button').css("pointer-events","none");
+                    rightImage(newIndex += n);
+                }
+            else
+                {
+                    $('#left-button').css("pointer-events","none");
+                    leftImage(newIndex += n);
+                }
+        }
+
+        function rightImage(n)
+        {
+            // alert("afasdf");
+            console.log("called");
+        
+            var x = $(".images");
+            // console.log(x);
+            if( n >= x.length)
+            {
+                newIndex = 0;
+            }
+            curIndex = newIndex - 1;
+            if(curIndex < 0)
+            {
+                curIndex = x.length-1;
+            }
+            // console.log(slideIndex+"  "+prevIndex);              
+
+            x.eq(curIndex).css({left: 0});
+            x.eq(newIndex).css({left: "100%"});
+
+            x.eq(curIndex).animate({left: "-100%"},1000);
+            x.eq(newIndex).animate({left: 0},1000);
+
+            setTimeout(function()
+                {
+                    $('#right-button').css("pointer-events","auto");
+                },1000);
+
+        }
+        var interval = setInterval(autoHelper,4000);
+        
+
+        function leftImage(n)
+        {
+            // alert("afasdf");
+        
+            var x = $(".images");
+            // console.log(x);
+            if(n < 0)
+            {
+                newIndex = x.length - 1;
+            }
+            curIndex = newIndex + 1;
+            if(curIndex >= x.length)
+            {
+                curIndex = 0;
+            }
+            // console.log(slideIndex+"  "+prevIndex);              
+
+            x.eq(curIndex).css({left:0});
+            x.eq(newIndex).css({left:"-100%"});
+
+            x.eq(curIndex).animate({left: "100%"},1000);
+            x.eq(newIndex).animate({left: 0},1000);
+            setTimeout(function()
+                {
+                    $('#left-button').css("pointer-events","auto");
+                },1000);
+        }
+        $(document).ready(function() {
+                $('.images').hover(function()
+                {
+                    clearInterval(interval);
+                    // console.log("hover");
+                },function(){
+                    interval = setInterval(autoHelper,4000);
+                });
+                $('.left-right-buttons').hover(function()
+                {
+                    clearInterval(interval);
+                },function()
+                {
+                    interval = setInterval(autoHelper,4000);
+                });
+        });
+                
+      </script>
+</head>
+<body>
+
+    <div id="icon-header">
+        <div id="icon">
+            ICON Comes here
+        </div>
+        <div id="logos">
+            Images come here
+        </div>
+    </div>
+    <div id="title-header">
+         <div id="title">
+             TItle Comes Here
+         </div>
+    </div>
+    <div id="category-header">
+    <ul>
+       <li>The Hindu</li><!--
+       --><li>Times of India</li><!--
+       --><li>Hindustan Times</li>   
+    </ul>
+    </div>
+    <div class = "image-container">
+         <img src="imgs/img1.jpg" class="images" id="image1">
+         <img src="imgs/img2.jpg" class="images" id="image2">
+         <img src="imgs/img3.jpg" class="images" id="image3">
+    </div>
+    <div class="left-right-buttons" onclick="changeImage(-1)" id="left-button">
+        <div>
+            &#10094;
+        </div>
+    </div>
+    <div class="left-right-buttons" onclick="changeImage(1)" id="right-button">
+        <div>
+            &#10095;
+        </div>
+    </div>
+</body>
+</html>

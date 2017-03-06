@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+      <script type="text/javascript" src="js/jquery.js"></script>
+      <script type="text/javascript">
+      	   function func(n)
+      	   {
+      	   	  console.log("Called");
+      	   	  switch(n)
+      	   	  {
+      	   	  	 case 1: newsSite = "the-hindu";
+
+      	   	  }
+	      	  var res;
+	                var key = 'd8c9f0a3c5944d11bd7172f62e4aab6e';
+	                $.ajax({
+	                    type: 'GET',
+	                    url: 'https://newsapi.org/v1/articles?source='+newsSite+'&sortBy=top&apiKey='+key,
+	                    dataType: 'json',
+	                    global: false,
+	                    async: false,
+	                    success: function (result) {
+	                        res = result;
+	                    }
+	                });
+	                console.log(res);
+	                // url = res['results'][0]['geometry']['location']['lat'];
+	                console.log(res['articles'].length);
+	                url = res['articles'][0];
+	                
+	                var arr=Array();
+	                // var strUrl;
+
+	                for(var i =0;i<res['articles'].length;i++)
+	                {
+	                	url = res['articles'][i]['url'];
+	                	console.log(url);
+	                	arr.push(url);
+	                	// strUrl += url;
+	                }
+	                console.log(arr);
+	                // console.log(strUrl);
+	                // for(var i=0;i<arr.length;i++)
+	                // {
+	                	// console.log(arr[i]);
+	                // }
+
+	                // var temp = {"url": strUrl};
+
+	                var json = JSON.stringify(arr);
+	                console.log(json);
+	                // window.location.replace("headlines.php");
+
+	                // $.redirectPost("headlines.php", {url : json});
+	                var f = document.createElement('form');
+					f.action='headlines.php';
+					f.method='POST';
+					f.target='_blank';
+
+					var i=document.createElement('input');
+					i.type='hidden';
+					i.name='url';
+					i.value=json;
+					f.appendChild(i);
+
+					document.body.appendChild(f);
+					f.submit();           
+	      	}
+      </script>
+</head>
+<body>
+	<script type="text/javascript">func(1);</script>
+</body>
