@@ -1,0 +1,56 @@
+body,head
+{
+	overflow-x: hidden;
+	margin: 0;
+	padding: 0;
+}
+#icon-header
+{
+	width : 100%;
+	background-color : #34495e;
+	/*color : #ecf0f1;*/
+	padding-top : 10px;
+	padding-bottom: 10px;  
+	font-family: sans-serif;
+	/*padding-left: 10px;*/
+	/*position: absolute;*/
+	top:0;
+	left: 0;
+	position: absolute;
+	z-index: 1;
+}
+
+
+#title-header
+{
+	background-color: #95a5a6;
+	/*color: #bdc3c7;*/
+	padding: 10px 0;
+	top: 38px;
+	width: 100%;
+	margin: 0;
+	display: block;
+	position: absolute;
+	z-index: 1;
+}
+
+#title
+{
+	font-family: sans-serif;
+	margin-left: 10px;
+}
+#icon
+{
+	margin-left: 10px; 
+	display: inline-block;
+}
+#logos,#login-icon,#signup-icon
+{
+	float: right;
+	margin-right: 10px;
+	display: inline-block;
+}
+#login-icon,#signup-icon
+{
+	cursor: pointer;
+}
