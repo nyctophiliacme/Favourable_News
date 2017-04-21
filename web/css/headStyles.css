@@ -98,7 +98,7 @@ body,head
 {
 	margin: auto;
 
-	margin-top: 15px;
+	margin-top: 10px;
 	margin-bottom: 0px;
 	width: 90%;
 	background-color: #34495e;
@@ -110,4 +110,10 @@ body,head
 	border-radius: 10px;
 	overflow-x: hidden;
 	overflow-y: auto;
+}
+.thumbs div
+{
+	margin: 0;
+	padding: 0;
+	font-size: 1.2em;
 }
