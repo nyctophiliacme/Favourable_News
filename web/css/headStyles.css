@@ -1,6 +1,10 @@
+:root{
+    --height: 700px;
+}
 body,head
 {
 	overflow-x: hidden;
+	overflow-y: auto;
 	margin: 0;
 	padding: 0;
 }
@@ -53,4 +57,57 @@ body,head
 #login-icon,#signup-icon
 {
 	cursor: pointer;
+}
+
+.container 
+{
+	top:76px;
+    width: 100%;
+    height: var(--height);
+    background: aqua;
+    position: fixed;
+    /*margin: auto;*/
+    /*padding: 10px;*/
+}
+#firstSection 
+{
+    width: 20%;
+	top:76px;
+    height: var(--height);
+    background-color: #34495e;
+    float: left;
+}
+#secondSection
+{
+    /*margin-left: 20%;*/
+    height: var(--height);
+    top:76px;
+    width: 60%;
+    background-color: #ecf0f1;
+    float: left;
+}
+#thirdSection
+{
+	width: 20%;
+	top:76px;
+	height: var(--height);
+	background-color: #34495e;
+	float: left;
+}
+.thumbs
+{
+	margin: auto;
+
+	margin-top: 15px;
+	margin-bottom: 0px;
+	width: 90%;
+	background-color: #34495e;
+	font-family: sans-serif;
+	color: #ecf0f1;
+	cursor: pointer;
+	/*z-index: 20;*/
+	padding: 10px;
+	border-radius: 10px;
+	overflow-x: hidden;
+	overflow-y: auto;
 }

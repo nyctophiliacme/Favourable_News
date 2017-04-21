@@ -5,7 +5,7 @@
 <html>
 <head>
       <script type="text/javascript" src="js/jquery.js"></script>
-       <script type="text/javascript" src="js/jqueryForm.js"></script>
+      <script type="text/javascript" src="js/jqueryForm.js"></script>
       <link rel="stylesheet" type="text/css" href="css/styles.css" /> 
       <script type="text/javascript">
       
@@ -279,7 +279,8 @@
                 {
                     case "1": newsSite = "the-hindu";
                               // fileName = "theHinduScrap.php";
-                              fileName = "tnTheHindu.html"
+                              // fileName = "tnTheHindu.html"
+                              fileName = "thumbnails.html";
                               // console.log("The Hindu");
                               break;
 
@@ -304,7 +305,7 @@
                               fileName = "tnEspn.html";
                               break;
                            
-                }
+                }              
                 var res;
                 var key = 'd8c9f0a3c5944d11bd7172f62e4aab6e';
                 $.ajax({
@@ -344,6 +345,7 @@
                 var json = JSON.stringify(arr);
                 console.log(json);
                 // window.open('temp.php', '_blank');
+                fileName = "thumbnails.html";
                 window.open(fileName, '_blank');
                 
                 // window.location.replace("hoverHandlerines.php");
@@ -356,8 +358,9 @@
                 // f.method='POST';
                 // f.target='_blank';
 
-                $("#idForm").prop("target", fileName);
+                // $("#idForm").prop("target", "_blank");
                 // $("#idForm").prop("action", "serverMaster.php");
+                // $("#idForm").prop("method", "POST");
                  
                 var i=document.createElement('input');
                 i.type='hidden';
