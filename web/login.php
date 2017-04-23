@@ -29,6 +29,9 @@
       $result = mysqli_query($con, $query);
       if (mysqli_num_rows($result) > 0) 
       {
+         session_start();
+         // print_r($_SESSION);
+         $_SESSION["uname"] = $username; 
          echo "success"; 
       } 
       else 

@@ -1,10 +1,14 @@
 <?php
     $var = $_POST['url'];
     $paper = $_POST['newsPaper'];
+    $imgs = $_POST['imgs'];
     echo "$paper<br/>";
+    echo "$imgs<br/>";
     
     $urls = json_decode($var);
+    $urlImgs = json_decode($imgs);
     echo "<br/>$urls";
+    echo "<br/>$urlImgs";
     //     $fileName = "";
     switch($paper)
     {
@@ -35,9 +39,10 @@
 
     // $json = json_encode($urls);
     // $ret = shell_exec("php tempBBC.php serialize($urls)");
-        $ret = shell_exec('php '.$fileName.' '.escapeshellarg(serialize($urls)));
+        $ret = shell_exec('php '.$fileName.' '.escapeshellarg(serialize($urls)).' '.escapeshellarg(serialize($urlImgs)));
        
        echo $ret;
+       echo "Error";
         // $json = "Hello";  
     // $ret = shell_exec("php receiver.php $json ");
     // echo "$ret";

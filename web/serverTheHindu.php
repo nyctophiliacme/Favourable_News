@@ -4,8 +4,10 @@
   // $urls = json_decode($urlEncoded);
 
   $var = $argv[1];
+  $temp = $argv[2];
    // echo $var;
   $urls = unserialize($var);
+  $urlToImgs = unserialize($temp);
 
   $mng = new MongoDB\Driver\Manager();
 
@@ -13,6 +15,7 @@
   $socket = $context->getSocket(ZMQ::SOCKET_PUSH, 'my pusher');
   $socket->connect("tcp://localhost:5555");
 
+  $itr = 0;
   foreach ($urls as $url) 
   {
       // $url = 'http://www.thehindu.com/opinion/editorial/moonlit-reality/article17378488.ece';
@@ -72,8 +75,8 @@
       }
       if($headlineData!="" && $contentData!="")
       {
-         $username='079d3f3f-1b27-4b7c-87df-b9ca97e02347';
-         $password='CYWxjjImbybr';
+         $username='86d9b891-54ad-4ca6-869c-314b267011b0';
+         $password='bFikwVZYP5HA';
          $data = json_encode(array('text' => $data));
          $URL='https://gateway.watsonplatform.net/tone-analyzer/api/v3/tone?version=2016-05-19&sentences=false';
 
@@ -107,6 +110,12 @@
          $joyVal = $array['document_tone']['tone_categories'][0]['tones'][3]['score'];
          $sadnessVal = $array['document_tone']['tone_categories'][0]['tones'][4]['score'];
 
+         echo "Anger: $angerVal <br/>";
+         echo "Disgust: $disgustVal <br/>";
+         echo "Fear: $fearVal <br/>";
+         echo "Joy: $joyVal <br/>";
+         echo "Sad: $sadnessVal <br/>";
+
          if($angerVal <= 0.5 && $disgustVal <= 0.5 && $fearVal <= 0.5 && $sadnessVal <= 0.5)
          {
              $bulk = new MongoDB\Driver\BulkWrite;
@@ -121,12 +130,14 @@
               'category' => "news" ,
               'headlines' => $headlineData ,
               'content' => $contentData ,
-              'extra' => $extraInfoData 
+              'extra' => $extraInfoData ,
+              'urlToImg' => $urlToImgs[$itr]
               );
              $socket->send(json_encode($entryData));
          }
       }
       echo "<h1>-----------------------------------------------------------------------------------------------------------------------</h1><br/>";
       $data = "";
+      $itr++;
   }
 ?>

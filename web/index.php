@@ -1,5 +1,6 @@
 <?php
   shell_exec("php push-server.php");
+  session_start();
 ?>
 <!DOCTYPE html>
 <html>
@@ -136,6 +137,24 @@
                      $('#errorMessage2').css("visibility","hidden");
                 });
 
+                $('#logout').click(function()
+                {
+                      $.ajax({
+                        type: "POST",
+                        url: "logout.php",
+                        success: function(result)
+                        {
+                           // alert("asdfa");
+                           console.log(result);
+                        },
+                        error : function(error)
+                        {
+                           console.log("error");
+                        }
+                     });
+                      location.reload();
+                })
+
                 $(window).scroll(function(event)
                 {
                     var scroll = $(window).scrollTop();
@@ -153,9 +172,9 @@
                         $('#title-header').css("position","absolute");
                         $('#category-header').css("position","absolute");
                         $('#title-header').css("top","38px");
-                        $('#category-header').css("top","76px");
+                        $('#category-header').css("top","78px");
                     }
-                })
+                });
 
         });
         function signupAjax()
@@ -261,6 +280,8 @@
                         $('#success').css("display","block");
                         $('#errorMessage').css("visibility","hidden");
                         $('#success').delay(0).fadeOut(5000);
+                        location.reload();
+
                      }
                   },
                   error : function(error)
@@ -324,6 +345,7 @@
                 url = res['articles'][0];
 
                 var arr=Array();
+                var urlToImage = Array();
                 // var strUrl;
 
                 for(var i =0;i<res['articles'].length;i++)
@@ -331,6 +353,8 @@
                     url = res['articles'][i]['url'];
                     console.log(url);
                     arr.push(url);
+                    img = res['articles'][i]['urlToImage'];
+                    urlToImage.push(img);
                     // strUrl += url;
                 }
                 console.log(arr);
@@ -343,7 +367,10 @@
                 // var temp = {"url": strUrl};
 
                 var json = JSON.stringify(arr);
+                var imgJson = JSON.stringify(urlToImage);
                 console.log(json);
+                // console.log("URLs TO IMages************************");
+                console.log(imgJson);
                 // window.open('temp.php', '_blank');
                 fileName = "thumbnails.html";
                 window.open(fileName, '_blank');
@@ -358,9 +385,9 @@
                 // f.method='POST';
                 // f.target='_blank';
 
-                // $("#idForm").prop("target", "_blank");
-                // $("#idForm").prop("action", "serverMaster.php");
-                // $("#idForm").prop("method", "POST");
+                $("#idForm").prop("target", "_blank");
+                $("#idForm").prop("action", "serverMaster.php");
+                $("#idForm").prop("method", "POST");
                  
                 var i=document.createElement('input');
                 i.type='hidden';
@@ -371,17 +398,22 @@
                 j.type = 'hidden';
                 j.name = 'newsPaper';
                 j.value = newsSite;
+
+                var k = document.createElement('input');
+                k.type = 'hidden';
+                k.name = 'imgs';
+                k.value = imgJson;
                 // f.appendChild(i);
 
                 document.getElementById("idForm").appendChild(i);
                 document.getElementById("idForm").appendChild(j);
-
+                document.getElementById("idForm").appendChild(k);
 
                 // document.body.appendChild(f);
                 // f.submit();
                 // $("#idForm").ajaxSubmit({url: 'temp.php', type: 'post'});
-                $("#idForm").ajaxSubmit({url: 'serverMaster.php', type: 'post'});
-                // $("#idForm").submit();
+                // $("#idForm").ajaxSubmit({url: 'serverMaster.php', type: 'post'});
+                $("#idForm").submit();
                 
                 // f.ajaxSubmit({url: 'temp.php', type: 'post'});
                 // <?php
@@ -404,17 +436,37 @@
         <div id="logos">
             Social Media Icons
         </div>
-        <div id="login-icon">
-          Login
-        </div>
-        <div id="signup-icon">
-          Signup
-        </div>
+        <?php
+          if(isset($_SESSION['uname']))
+          {?>
+            <div id = "logged-in">
+              Welcome
+            <?php echo $_SESSION['uname']; ?>
+            </div>
+          <?php
+            }
+              else
+              { ?>
+                <div id="login-icon">
+                  Login
+                </div>
+                <div id="signup-icon">
+                  Signup
+                </div>
+              <?php } ?>
+   
     </div>
     <div id="title-header">
          <div id="title">
              Favourable News
          </div>
+         <?php if(isset($_SESSION['uname']))
+         {?>
+            <div id="logout">
+              Logout
+            </div>
+
+         <?php } ?>
     </div>
     <div id="category-header">
     <ul>
