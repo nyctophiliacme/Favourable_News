@@ -11,14 +11,15 @@ body,head
 	margin: 0;
 	padding: 0;
 	height: 100%;
+	font-family: sans-serif;
 }
 #icon-header
 {
 	width : 100%;
 	background-color : var(--dark);
 	/*color : #ecf0f1;*/
-	padding-top : 10px;
-	padding-bottom: 10px;  
+	/*padding-top : 10px;
+	padding-bottom: 10px;  */
 	font-family: sans-serif;
 	/*padding-left: 10px;*/
 	/*position: absolute;*/
@@ -27,7 +28,13 @@ body,head
 	/*z-index: 1;*/
 	color: white;
 }
-
+#pic
+{
+	width: 90%;
+	margin: auto;
+	display: block;
+	/*height: 400px;*/
+}
 
 #title-header
 {
@@ -51,12 +58,29 @@ body,head
 {
 	margin-left: 10px; 
 	display: inline-block;
+
+	margin-top: 5px;
+	margin-bottom: 0px;
 }
-#logos,#login-icon,#signup-icon
+#logos
+{
+	float: right;
+	margin-top: 5px;
+	margin-right: 5px;
+	display: inline-block;
+	color: white;
+}
+.social-icons
+{
+	margin-right: 5px;
+}
+#login-icon,#signup-icon
 {
 	float: right;
 	margin-right: 10px;
 	display: inline-block;
+	margin-top: 10px;
+	margin-bottom: 10px;
 }
 #login-icon,#signup-icon
 {
@@ -109,3 +133,19 @@ body,head
     /*flex-grow: 1;*/
     /*overflow-y: auto;*/
 }
+p
+{
+	text-align: justify;
+}
+
+#logged-in
+{
+	float: right;
+	margin-right: 10px;
+	/*display: inline-block;*/
+	font-family: sans-serif;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	/*display: none;*/
+}
+

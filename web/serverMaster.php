@@ -2,11 +2,15 @@
     $var = $_POST['url'];
     $paper = $_POST['newsPaper'];
     $imgs = $_POST['imgs'];
+    $desc = $_POST['desc'];
+
     echo "$paper<br/>";
     echo "$imgs<br/>";
+    echo "$desc<br/>";
     
     $urls = json_decode($var);
     $urlImgs = json_decode($imgs);
+    $urlDesc = json_decode($desc);
     echo "<br/>$urls";
     echo "<br/>$urlImgs";
     //     $fileName = "";
@@ -31,7 +35,7 @@
             break;
 
         case "espn-cric-info":
-            $fileName = "serverEspn.php";
+            $fileName = "serverEspnCricInfo.php";
             break; 
     }
     
@@ -39,7 +43,7 @@
 
     // $json = json_encode($urls);
     // $ret = shell_exec("php tempBBC.php serialize($urls)");
-        $ret = shell_exec('php '.$fileName.' '.escapeshellarg(serialize($urls)).' '.escapeshellarg(serialize($urlImgs)));
+        $ret = shell_exec('php '.$fileName.' '.escapeshellarg(serialize($urls)).' '.escapeshellarg(serialize($urlImgs)).' '.escapeshellarg(serialize($urlDesc)));
        
        echo $ret;
        echo "Error";

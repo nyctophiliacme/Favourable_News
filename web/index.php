@@ -5,6 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+      <link rel="shortcut icon" href="imgs/title.jpg" />
       <script type="text/javascript" src="js/jquery.js"></script>
       <script type="text/javascript" src="js/jqueryForm.js"></script>
       <link rel="stylesheet" type="text/css" href="css/styles.css" /> 
@@ -300,30 +301,29 @@
                 {
                     case "1": newsSite = "the-hindu";
                               // fileName = "theHinduScrap.php";
-                              // fileName = "tnTheHindu.html"
-                              fileName = "thumbnails.html";
+                              fileName = "tnTheHindu.php"
                               // console.log("The Hindu");
                               break;
 
                     case "2": newsSite = "the-times-of-india";
                               // fileName = "timesOfIndiaScrap.php";
-                              fileName = "tnTheTimes.html";
+                              fileName = "tnTheTimes.php";
                               break;
 
                     case "3": newsSite = "bbc-news";
                               // fileName = "bbcScrap.php";
                               // fileName = "temp.php";
-                              fileName = "tnBbc.html";
+                              fileName = "tnBbc.php";
                               break;
                               
                     case "4": newsSite = "cnn";
                               // fileName = "cnnScrap.php";
-                              fileName = "tnCnn.html";
+                              fileName = "tnCnn.php";
                               break;
                               
                     case "5": newsSite = "espn-cric-info";
                               // fileName = "espnCricInfoScrap.php";
-                              fileName = "tnEspn.html";
+                              fileName = "tnEspn.php";
                               break;
                            
                 }              
@@ -346,6 +346,7 @@
 
                 var arr=Array();
                 var urlToImage = Array();
+                var arrDesc = Array();
                 // var strUrl;
 
                 for(var i =0;i<res['articles'].length;i++)
@@ -355,6 +356,9 @@
                     arr.push(url);
                     img = res['articles'][i]['urlToImage'];
                     urlToImage.push(img);
+
+                    desc = res['articles'][i]['description'];
+                    arrDesc.push(desc);
                     // strUrl += url;
                 }
                 console.log(arr);
@@ -368,11 +372,12 @@
 
                 var json = JSON.stringify(arr);
                 var imgJson = JSON.stringify(urlToImage);
+                var descJson = JSON.stringify(arrDesc);
                 console.log(json);
                 // console.log("URLs TO IMages************************");
-                console.log(imgJson);
+                console.log(descJson);
                 // window.open('temp.php', '_blank');
-                fileName = "thumbnails.html";
+                // fileName = "thumbnails.php";
                 window.open(fileName, '_blank');
                 
                 // window.location.replace("hoverHandlerines.php");
@@ -385,9 +390,9 @@
                 // f.method='POST';
                 // f.target='_blank';
 
-                $("#idForm").prop("target", "_blank");
-                $("#idForm").prop("action", "serverMaster.php");
-                $("#idForm").prop("method", "POST");
+                // $("#idForm").prop("target", "_blank");
+                // $("#idForm").prop("action", "serverMaster.php");
+                // $("#idForm").prop("method", "POST");
                  
                 var i=document.createElement('input');
                 i.type='hidden';
@@ -403,17 +408,23 @@
                 k.type = 'hidden';
                 k.name = 'imgs';
                 k.value = imgJson;
+
+                var l = document.createElement('input');
+                l.type = 'hidden';
+                l.name = 'desc';
+                l.value = descJson;
                 // f.appendChild(i);
 
                 document.getElementById("idForm").appendChild(i);
                 document.getElementById("idForm").appendChild(j);
                 document.getElementById("idForm").appendChild(k);
+                document.getElementById("idForm").appendChild(l);                
 
                 // document.body.appendChild(f);
                 // f.submit();
                 // $("#idForm").ajaxSubmit({url: 'temp.php', type: 'post'});
-                // $("#idForm").ajaxSubmit({url: 'serverMaster.php', type: 'post'});
-                $("#idForm").submit();
+                $("#idForm").ajaxSubmit({url: 'serverMaster.php', type: 'post'});
+                // $("#idForm").submit();
                 
                 // f.ajaxSubmit({url: 'temp.php', type: 'post'});
                 // <?php
@@ -426,15 +437,24 @@
 
             }    
       </script>
+      <title>
+          Proton News
+      </title>
 </head>
 <body>
     <form id = "idForm" method = "POST" ></form>
     <div id="icon-header">
         <div id="icon">
-            ICON Comes here
+            <img src="imgs/logo.png" height="28px">
         </div>
         <div id="logos">
-            Social Media Icons
+            <a href="https://www.facebook.com" class="social-icons" target="_blank">
+                <img src="imgs/fb.png" height="28px" width="28px" align="top">
+            </a>
+            <a href="https://www.twitter.com" class="social-icons" target="_blank">
+                <img src="imgs/twitter.png" height="28px" width="28px">
+            </a>
+            
         </div>
         <?php
           if(isset($_SESSION['uname']))
@@ -458,7 +478,7 @@
     </div>
     <div id="title-header">
          <div id="title">
-             Favourable News
+             Your daily source for Positive, Uplifting and Inspiring Stories from around the world!
          </div>
          <?php if(isset($_SESSION['uname']))
          {?>

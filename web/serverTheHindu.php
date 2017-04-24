@@ -1,11 +1,14 @@
-  <?php
+<?php
   require_once('simple_html_dom.php');
   // $urlEncoded = $_POST['url'];
   // $urls = json_decode($urlEncoded);
 
   $var = $argv[1];
   $temp = $argv[2];
+  $varDesc = $argv[3];
    // echo $var;
+
+  $desc = unserialize($varDesc);
   $urls = unserialize($var);
   $urlToImgs = unserialize($temp);
 
@@ -77,7 +80,7 @@
       {
          $username='86d9b891-54ad-4ca6-869c-314b267011b0';
          $password='bFikwVZYP5HA';
-         $data = json_encode(array('text' => $data));
+         $jsonData = json_encode(array('text' => $headlineData));
          $URL='https://gateway.watsonplatform.net/tone-analyzer/api/v3/tone?version=2016-05-19&sentences=false';
 
          $ch = curl_init();
@@ -87,7 +90,7 @@
          curl_setopt($ch, CURLOPT_USERPWD, "$username:$password");
          curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
          curl_setopt($ch, CURLOPT_POST, true);
-         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+         curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData);
          curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); 
          $result = curl_exec($ch);
          curl_close ($ch);
@@ -110,34 +113,66 @@
          $joyVal = $array['document_tone']['tone_categories'][0]['tones'][3]['score'];
          $sadnessVal = $array['document_tone']['tone_categories'][0]['tones'][4]['score'];
 
-         echo "Anger: $angerVal <br/>";
-         echo "Disgust: $disgustVal <br/>";
-         echo "Fear: $fearVal <br/>";
-         echo "Joy: $joyVal <br/>";
-         echo "Sad: $sadnessVal <br/>";
-
-         if($angerVal <= 0.5 && $disgustVal <= 0.5 && $fearVal <= 0.5 && $sadnessVal <= 0.5)
+         if($angerVal <= 0.6 && $disgustVal <= 0.6 && $fearVal <= 0.6 && $sadnessVal <= 0.6)
          {
-             $bulk = new MongoDB\Driver\BulkWrite;
-         
-             $doc = ["_id" => new MongoDB\BSON\ObjectID, "headline" => $headlineData, "content" => $contentData, "extraInfo" => $extraInfoData];
-             $bulk->insert($doc);
+             $jsonData = json_encode(array('text' => $data));
+             $URL='https://gateway.watsonplatform.net/tone-analyzer/api/v3/tone?version=2016-05-19&sentences=false';
 
-             $mng->executeBulkWrite('articles.theHinduData', $bulk);
+             $ch = curl_init();
+             curl_setopt($ch, CURLOPT_URL,$URL);
+             curl_setopt($ch, CURLOPT_TIMEOUT, 100); 
+             curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
+             curl_setopt($ch, CURLOPT_USERPWD, "$username:$password");
+             curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+             curl_setopt($ch, CURLOPT_POST, true);
+             curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData);
+             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); 
+             $result = curl_exec($ch);
+             curl_close ($ch);
 
-             $entryData = array(
-              'url' => $url ,
-              'category' => "news" ,
-              'headlines' => $headlineData ,
-              'content' => $contentData ,
-              'extra' => $extraInfoData ,
-              'urlToImg' => $urlToImgs[$itr]
-              );
-             $socket->send(json_encode($entryData));
-         }
-      }
+             echo "<br/><br/><br/><br/>";
+
+             $array = json_decode($result,true);
+             
+             foreach ($array['document_tone']['tone_categories'][0]['tones'] as $vals) 
+             {
+                echo $vals['tone_name'];
+                echo " ------> ";
+                echo $vals['score'];
+                echo "<br/>";
+             }
+
+             $angerVal = $array['document_tone']['tone_categories'][0]['tones'][0]['score'];
+             $disgustVal = $array['document_tone']['tone_categories'][0]['tones'][1]['score'];
+             $fearVal = $array['document_tone']['tone_categories'][0]['tones'][2]['score'];
+             $joyVal = $array['document_tone']['tone_categories'][0]['tones'][3]['score'];
+             $sadnessVal = $array['document_tone']['tone_categories'][0]['tones'][4]['score'];
+
+             if($angerVal <= 0.6 && $disgustVal <= 0.6 && $fearVal <= 0.6 && $sadnessVal <= 0.6)
+             {
+                 $bulk = new MongoDB\Driver\BulkWrite;
+             
+                 $doc = ["_id" => new MongoDB\BSON\ObjectID, "headline" => $headlineData, "content" => $contentData, "extraInfo" => $extraInfoData];
+                 $bulk->insert($doc);
+
+                 $mng->executeBulkWrite('articles.theHinduData', $bulk);
+
+                 $entryData = array(
+                  'url' => $url ,
+                  'category' => "theHinduNews" ,
+                  'headlines' => $headlineData ,
+                  'content' => $contentData ,
+                  'extra' => $extraInfoData ,
+                  'urlToImg' => $urlToImgs[$itr] ,
+                  'desc' => $desc[$itr]
+                  );
+                 $socket->send(json_encode($entryData));
+             }
+          }
+        }  
+        echo "Hello  $desc[$itr]<br/>";
       echo "<h1>-----------------------------------------------------------------------------------------------------------------------</h1><br/>";
       $data = "";
       $itr++;
-  }
+    }
 ?>
